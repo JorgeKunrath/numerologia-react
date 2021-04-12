@@ -1,5 +1,7 @@
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import styled from 'styled-components'
+
+import { useDataContext } from './DataContext'
 
 const Form = styled.form`
   display: grid;
@@ -11,17 +13,18 @@ const Form = styled.form`
   }
 `
 
-type Props = {
-  handleFormData: (name: string, born: string) => void
-}
-
-export default function NameForm({ handleFormData }: Props) {
+export default function NameForm() {
   const name = useRef<HTMLInputElement>(null)
   const born = useRef<HTMLInputElement>(null)
 
+  const { setRaw } = useDataContext()
+
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault()
-    handleFormData(name.current!.value, born.current!.value)
+    setRaw({
+      name: name.current!.value,
+      born: born.current!.value,
+    })
   }
 
   return (
