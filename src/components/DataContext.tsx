@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import calculate from '../functions/calculate'
+import calculateName from '../functions/calculate'
 
 export type RawType = {
   name: string
@@ -27,11 +27,11 @@ export const DataProvider: React.FC<React.ReactNode> = ({ children }) => {
   const [data, setData] = useState<any>(null)
 
   useEffect(() => {
-    raw && calculate(raw, setData)
+    raw && setData({ name: calculateName(raw.name), born: 'todo' })
   }, [raw])
 
   useEffect(() => {
-    console.log({ data })
+    data && console.log(data)
   }, [data])
 
   const values = {

@@ -30,8 +30,8 @@ export default function NameForm() {
   return (
     <Form onSubmit={handleSubmit}>
       <p>Insira seu nome e data de nascimento</p>
-      <input ref={name} type="text" placeholder="Nome completo" />
-      <input ref={born} type="date" />
+      <input ref={name} type="text" name="name" placeholder="Nome completo" />
+      <input ref={born} type="date" name="birthday" />
       <button type="submit">Calcular</button>
     </Form>
   )
