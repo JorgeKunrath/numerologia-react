@@ -11,14 +11,16 @@ const ConversionTable = new Map([
   ['s', 1], ['t', 2], ['u', 3], ['v', 4], ['w', 5], ['x', 6], ['y', 7], ['z', 8], 
 ])
 
-export function normalize(name: string) {
+function normalize(name: string) {
   return name
     .toLowerCase()
     .normalize('NFD')
     .replace(/[^a-z]/g, '')
 }
 
-export function defineChars(name: string) {
+export function mountChars(rawName: string) {
+  const name = normalize(rawName)
+
   function handleException(c: string, i: number, name: string[]) {
     let isException = false
     /*
@@ -44,19 +46,10 @@ export function defineChars(name: string) {
   const fullName: Char[] = name.split('').map((c: string, i, name) => ({
     char: c,
     isVowel: 'aeiou'.includes(c) || handleException(c, i, name),
+    value: ConversionTable.get(c),
   }))
 
   return fullName
-}
-
-export function applyValues(nameObj: Char[]): Char[] {
-  const nameObjNumbered = nameObj.map((item: Char) => {
-    return {
-      ...item,
-      value: ConversionTable.get(item.char),
-    }
-  })
-  return nameObjNumbered
 }
 
 export function somatory(nameObjNum: Char[]) {
@@ -93,9 +86,9 @@ export function somatory(nameObjNum: Char[]) {
   )
 
   return {
-    vowelsRes: _somatory(initialValues.v),
-    consonantsRes: _somatory(initialValues.c),
-    fullNameRes: _somatory(initialValues.f),
+    vowels: _somatory(initialValues.v),
+    consonants: _somatory(initialValues.c),
+    fullName: _somatory(initialValues.f),
   }
 }
 

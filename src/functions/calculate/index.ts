@@ -1,20 +1,17 @@
-import { normalize, defineChars, applyValues, somatory, frequency } from './_helpers'
+import { mountChars, somatory, frequency } from './_helpers'
 
 export default function calculateName(rawName: string) {
-  const name = normalize(rawName)
-  const nameObj = defineChars(name)
-  const nameWithValues = applyValues(nameObj)
-
-  const { vowelsRes, consonantsRes, fullNameRes } = somatory(nameWithValues)
-  const freq = frequency(nameWithValues)
+  const chars = mountChars(rawName)
+  const { vowels, consonants, fullName } = somatory(chars)
+  const freq = frequency(chars)
 
   const calculated = {
     res: {
-      vowels: vowelsRes,
-      consonants: consonantsRes,
-      full: fullNameRes,
+      vowels,
+      consonants,
+      fullName,
     },
-    chars: nameObj,
+    chars,
     frequency: freq,
   }
   return calculated
