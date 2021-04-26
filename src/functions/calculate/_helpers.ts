@@ -22,61 +22,16 @@ export function mountChars(rawName: string) {
   const name = normalize(rawName)
   // console.log({ name })
 
-  function handleException(c: string, i: number, nameArr: string[]) {
-    let isException = false
-
-    let name = nameArr.join('')
-
-    if (c === 'w') {
-      // W é CONSOANTE caso seja a primeira letra da palavra.
-
-      let prev = name[i - 1]
-      if (prev === ' ' || prev === undefined) return false
-    }
-
-    if (c === 'y') {
-      // Y é vogal quando for a única vogal da palavra
-
-      let prevSpace = name.lastIndexOf(' ', i)
-      let nextSpace = name.indexOf(' ', i)
-      nextSpace = nextSpace === -1 ? name.length : nextSpace
-      let word = name.substring(prevSpace, nextSpace)
-      let match = word.match(/[aeiou]/gi)
-      if (match === null) return true
-    }
-
-    if (c === 'w' || c === 'y') {
-      console.log({ name })
-      console.log({ i })
-      // Y e W são vogais quando precedidas por uma vogal formando ditongo
-    }
-    /*
-
-
-
-
-    TODO
-    Exceção de W e Y
-
-    por padrão eles não são vogais, e tá tudo bem
-
-    1. Y é vogal quando for a única vogal da palavra
-    2. Y e W são vogais quando precedidas por uma vogal formando ditongo
-    3. W é consoante caso seja a primeira letra da palavra.
-
-    1 e 3 são fáceis, só preciso identificar palavras
-    2 eu finjo que não sei o que é sílaba, se a letra anterior for vogal eu considero como ditongo e deu
-    - buscar referências de nomes com Y e W para testar se na maior parte dos casos é ditongo ou não
-
-    aqui eu preciso saber o que é uma palavra, no resto do código não
-
-    */
-    return isException
-  }
+  // TODO
+  // function handleException(c: string, i: number, nameArr: string[]) {
+  //   // ask the fucking user
+  //   // 😒 🔫
+  //   return false
+  // }
 
   const fullName: Char[] = name.split('').map((c: string, i, name) => ({
     char: c,
-    isVowel: 'aeiou'.includes(c) || handleException(c, i, name),
+    isVowel: 'aeiou'.includes(c), // || handleException(c, i, name),
     value: ConversionTable.get(c),
   }))
 
