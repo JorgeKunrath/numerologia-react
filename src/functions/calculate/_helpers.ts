@@ -8,18 +8,19 @@ interface Char {
 const ConversionTable = new Map([
   ['a', 1], ['b', 2], ['c', 3], ['d', 4], ['e', 5], ['f', 6], ['g', 7], ['h', 8], ['i', 9], 
   ['j', 1], ['k', 2], ['l', 3], ['m', 4], ['n', 5], ['o', 6], ['p', 7], ['q', 8], ['r', 9], 
-  ['s', 1], ['t', 2], ['u', 3], ['v', 4], ['w', 5], ['x', 6], ['y', 7], ['z', 8], 
+  ['s', 1], ['t', 2], ['u', 3], ['v', 4], ['w', 5], ['x', 6], ['y', 7], ['z', 8], [' ', 0],
 ])
 
 function normalize(name: string) {
   return name
     .toLowerCase()
     .normalize('NFD')
-    .replace(/[^a-z]/g, '')
+    .replace(/[^a-z ]/g, '')
 }
 
 export function mountChars(rawName: string) {
   const name = normalize(rawName)
+  console.log({ name })
 
   function handleException(c: string, i: number, name: string[]) {
     let isException = false
@@ -53,12 +54,15 @@ export function mountChars(rawName: string) {
 }
 
 export function somatory(nameObjNum: Char[]) {
+  function _sum(acc: number, num: number) {
+    return acc + num
+  }
   function _somatory(initial: number) {
     let step = initial
     let arr = [step]
     while (step > 9) {
       let stepArray = step.toString().split('').map(Number)
-      step = stepArray.reduce((acc: number, num: number) => acc + num)
+      step = stepArray.reduce(_sum)
       arr.push(step)
     }
     return arr
@@ -66,6 +70,7 @@ export function somatory(nameObjNum: Char[]) {
 
   const initialValues = nameObjNum.reduce(
     (acc, char: Char) => {
+      console.log(char)
       if (!char?.value) return acc
       const full = acc.f + char.value
       if (char.isVowel) {
