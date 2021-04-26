@@ -20,11 +20,41 @@ function normalize(name: string) {
 
 export function mountChars(rawName: string) {
   const name = normalize(rawName)
-  console.log({ name })
+  // console.log({ name })
 
-  function handleException(c: string, i: number, name: string[]) {
+  function handleException(c: string, i: number, nameArr: string[]) {
     let isException = false
+
+    let name = nameArr.join('')
+
+    if (c === 'w') {
+      // W é CONSOANTE caso seja a primeira letra da palavra.
+
+      let prev = name[i - 1]
+      if (prev === ' ' || prev === undefined) return false
+    }
+
+    if (c === 'y') {
+      // Y é vogal quando for a única vogal da palavra
+
+      let prevSpace = name.lastIndexOf(' ', i)
+      let nextSpace = name.indexOf(' ', i)
+      nextSpace = nextSpace === -1 ? name.length : nextSpace
+      let word = name.substring(prevSpace, nextSpace)
+      let match = word.match(/[aeiou]/gi)
+      if (match === null) return true
+    }
+
+    if (c === 'w' || c === 'y') {
+      console.log({ name })
+      console.log({ i })
+      // Y e W são vogais quando precedidas por uma vogal formando ditongo
+    }
     /*
+
+
+
+
     TODO
     Exceção de W e Y
 
@@ -70,7 +100,7 @@ export function somatory(nameObjNum: Char[]) {
 
   const initialValues = nameObjNum.reduce(
     (acc, char: Char) => {
-      console.log(char)
+      // console.log(char)
       if (!char?.value) return acc
       const full = acc.f + char.value
       if (char.isVowel) {
