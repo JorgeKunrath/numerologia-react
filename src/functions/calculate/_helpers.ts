@@ -20,7 +20,6 @@ function normalize(name: string) {
 
 export function mountChars(rawName: string) {
   const name = normalize(rawName)
-  // console.log({ name })
 
   // TODO
   // function handleException(c: string, i: number, nameArr: string[]) {
@@ -38,24 +37,20 @@ export function mountChars(rawName: string) {
   return fullName
 }
 
-export function somatory(nameObjNum: Char[]) {
-  function _sum(acc: number, num: number) {
-    return acc + num
+export function sumSteps(initial: number) {
+  let step = initial
+  let arr = [step]
+  while (step > 9) {
+    let stepArray = step.toString().split('').map(Number)
+    step = stepArray.reduce((acc, num) => acc + num)
+    arr.push(step)
   }
-  function _somatory(initial: number) {
-    let step = initial
-    let arr = [step]
-    while (step > 9) {
-      let stepArray = step.toString().split('').map(Number)
-      step = stepArray.reduce(_sum)
-      arr.push(step)
-    }
-    return arr
-  }
+  return arr
+}
 
+export function somatory(nameObjNum: Char[]) {
   const initialValues = nameObjNum.reduce(
     (acc, char: Char) => {
-      // console.log(char)
       if (!char?.value) return acc
       const full = acc.f + char.value
       if (char.isVowel) {
@@ -76,9 +71,9 @@ export function somatory(nameObjNum: Char[]) {
   )
 
   return {
-    vowels: _somatory(initialValues.v),
-    consonants: _somatory(initialValues.c),
-    fullName: _somatory(initialValues.f),
+    vowels: sumSteps(initialValues.v),
+    consonants: sumSteps(initialValues.c),
+    fullName: sumSteps(initialValues.f),
   }
 }
 
@@ -88,4 +83,46 @@ export function frequency(nameObjNum: Char[]) {
     char?.value && freq[char.value - 1]++
   })
   return freq
+}
+
+/**
+ * somatório de dd/mm/ano-do-ultimo-niver
+ */
+export function getPersonalYear(rawBorn: string) {
+  let yearToUse
+
+  const bornDate = new Date(rawBorn)
+  const born = {
+    d: bornDate.getUTCDate(),
+    m: bornDate.getUTCMonth() + 1,
+    y: bornDate.getUTCFullYear(),
+  }
+
+  const curDate = new Date()
+  const cur = {
+    d: curDate.getUTCDate(),
+    m: curDate.getUTCMonth() + 1,
+    y: curDate.getUTCFullYear(),
+  }
+
+  if (born.m < cur.m) {
+    yearToUse = cur.y
+  } else if (born.m === cur.m) {
+    if (born.d <= cur.d) {
+      yearToUse = cur.y
+    } else {
+      yearToUse = cur.y - 1
+    }
+  } else {
+    yearToUse = cur.y - 1
+  }
+
+  const initialDate = `${born.d}${born.m}${yearToUse}`
+    .split('')
+    .map((s) => +s)
+    .reduce((acc, cur) => acc + cur, 0)
+
+  const arr = sumSteps(initialDate)
+
+  return arr
 }

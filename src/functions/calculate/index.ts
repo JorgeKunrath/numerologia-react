@@ -1,6 +1,6 @@
-import { mountChars, somatory, frequency } from './_helpers'
+import { mountChars, somatory, frequency, sumSteps, getPersonalYear } from './_helpers'
 
-export default function calculateName(rawName: string) {
+export function calculateName(rawName: string) {
   const chars = mountChars(rawName)
   const { vowels, consonants, fullName } = somatory(chars)
   const freq = frequency(chars)
@@ -15,4 +15,17 @@ export default function calculateName(rawName: string) {
     frequency: freq,
   }
   return calculated
+}
+
+export function calculateBorn(rawBorn: string) {
+  const bornInitial = rawBorn
+    .replaceAll('-', '')
+    .split('')
+    .map((s) => +s)
+    .reduce((acc, cur) => acc + cur, 0)
+
+  return {
+    res: sumSteps(bornInitial),
+    personalYear: getPersonalYear(rawBorn),
+  }
 }
